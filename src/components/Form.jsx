@@ -1,7 +1,15 @@
+import { TbFlareFilled } from "react-icons/tb";
+import Intro from "@/components/Intro";
 import { useState } from "react";
-import { TbNorthStar, TbFlareFilled } from "react-icons/tb";
 
 function Form() {
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    message: "",
+    services: [],
+  });
+
   const services = [
     "Website Design",
     "Content",
@@ -11,80 +19,91 @@ function Form() {
     "Other",
   ];
 
-  // checkbox ki state
-  const [selectedServers, setSelectedServers] = useState([]);
+  const handleSubmit = (e) => {
+    console.log(formData);
+    e.preventDefault();
+  };
 
-  // // checkbox se deal karnekeliye
-  // const handleCheckboxChange=(value,checked) => {
-  //   setSelectedServices ((prevstate)=>{
-  //     return [...prevstate,value]
-  //   })
-  // } else{
-  //   setSelectedServices ((prevstate)=>{
-  //     const updateservices = 
-  // }
-  // setSelectedServices((prevstate) => {
-  //   return checked
-  //     ? [...prevstate, value]
-  //     : prevstate.filter((item) => item !== value);
-  // });
+  const handleChange = (value, property) => {
+    setFormData({ ...formData, [property]: value });
+  };
+
+  const handleCheckbox = (value, checked) => {
+    if (checked) {
+      console.log(`Theek hai mein ${value} ko add kar dunga`);
+      return;
+    }
+
+    console.log(`Theek hai mein ${value} ko remove kar dunga`);
+  };
+
   return (
     <>
-      <h1 className="max-w-96 text-3xl font-semibold">
-        Got Ideas?{" "}
-        <TbNorthStar className="inline-block text-lime-500 md:text-black" />
-        We've got the skills. Let's team up.
-      </h1>
-      <p className="my-6 text-xl">
-        Tell us more about yourself and what's on your mind.
-      </p>
-
-      <form className="flex flex-col gap-2">
-        {/* Inputs */}
+      <Intro />
+      <form
+        className="flex flex-col gap-1"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSeN0_URvk2ZsuMqPM6E1e9-5ZrROrJa2ud0EZFDSA_NNGczOw/formResponse"
+      >
+        {/* Input */}
         <input
           type="text"
-          name="fullname"
+          name="entry.1930135684"
           id="fullname"
-          className="border-b border-stone-700 p-2 placeholder-gray-700 md:bg-lime-400"
           placeholder="Your name"
+          className="border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
+          required
+          value={formData.fullname}
+          onChange={(e) => handleChange(e.target.value, "fullname")}
         />
         <input
           type="email"
-          name="email"
+          name="entry.554344319"
           id="email"
-          className="border-b border-stone-700 p-2 placeholder-gray-700 md:bg-lime-400"
           placeholder="your@company.com"
+          className="border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
+          required
+          value={formData.email}
+          onChange={(e) => handleChange(e.target.value, "email")}
         />
         <input
           type="text"
-          name="message"
+          name="entry.133101820"
           id="message"
-          className="h-24 border-b border-stone-700 p-2 placeholder-gray-700 md:bg-lime-400"
-          placeholder="Tell us a little about your project..."
+          placeholder="Tell us a bit about your project..."
+          className="h-24 border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
+          required
+          value={formData.message}
+          onChange={(e) => handleChange(e.target.value, "message")}
         />
 
-        <p className="my-6 text-gray-700">How can we help?</p>
+        <p className="my-5 text-zinc-800">How can we help?</p>
 
-        {/* Checbox */}
-        <div className="mb-8 grid grid-cols-2 md:max-w-96">
-          {services.map((service, index) => {
+        {/* Checkbox */}
+        <section className="mb-12 grid grid-cols-2 gap-1 md:max-w-96">
+          {services.map((service, idx) => {
             return (
               <label
-                key={service + index}
-                className="flex cursor-pointer items-center gap-2"
+                key={service + idx}
+                className="flex cursor-pointer items-center gap-1"
               >
-                <input type="checkbox" name="services" className="size-5" />{" "}
+                <input
+                  type="checkbox"
+                  name="entry.1574888281"
+                  value={service}
+                  className="size-6"
+                  onChange={(e) => handleCheckbox(service, e.target.checked)}
+                />
                 {service}
               </label>
             );
           })}
-        </div>
-
+        </section>
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 rounded-lg bg-zinc-950 p-1 text-white md:p-2"
+          className="flex justify-center gap-2 rounded-lg bg-stone-950 p-2 text-white"
         >
-          Let's get started <TbFlareFilled className="text-lime-400" />
+          Let's get started
+          <TbFlareFilled size={20} className="text-lime-500" />
         </button>
       </form>
     </>
