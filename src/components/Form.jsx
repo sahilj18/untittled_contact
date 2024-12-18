@@ -1,14 +1,14 @@
+import { useForm } from "react-hook-form";
 import { TbFlareFilled } from "react-icons/tb";
 import Intro from "@/components/Intro";
 import { useState } from "react";
+import utils from "@/lib/utils";
+
+console.log("coming form the file");
 
 function Form() {
-  const [formData, setFormData] = useState({
-    fullname: "",
-    email: "",
-    message: "",
-    services: [],
-  });
+  const{handleSubmit, register} = useForm();
+
 
   const services = [
     "Website Design",
@@ -19,62 +19,54 @@ function Form() {
     "Other",
   ];
 
-  const handleSubmit = (e) => {
-    console.log(formData);
-    e.preventDefault();
-  };
-
-  const handleChange = (value, property) => {
-    setFormData({ ...formData, [property]: value });
-  };
-
-  const handleCheckbox = (value, checked) => {
-    if (checked) {
-      console.log(`Theek hai mein ${value} ko add kar dunga`);
-      return;
-    }
-
-    console.log(`Theek hai mein ${value} ko remove kar dunga`);
-  };
+ 
 
   return (
     <>
       <Intro />
       <form
         className="flex flex-col gap-1"
-        action="https://docs.google.com/forms/d/e/1FAIpQLSeN0_URvk2ZsuMqPM6E1e9-5ZrROrJa2ud0EZFDSA_NNGczOw/formResponse"
+        onSubmit={handleSubmit((data)=> console.log(data))}
       >
         {/* Input */}
         <input
           type="text"
-          name="entry.1930135684"
+          {...register("fullname", {required: "kindly enter your name"})}
           id="fullname"
           placeholder="Your name"
           className="border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
-          required
-          value={formData.fullname}
-          onChange={(e) => handleChange(e.target.value, "fullname")}
+         
         />
+         {error.fullname&&(
+          <p className="text-red-500 text-xs">
+            {error.fullname.message}
+          </p>  
+        )}
         <input
           type="email"
-          name="entry.554344319"
+          {...register("email",{required: "kindly enter your email"})}
           id="email"
           placeholder="your@company.com"
-          className="border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
-          required
-          value={formData.email}
-          onChange={(e) => handleChange(e.target.value, "email")}
+          className="border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"  
         />
+      {error.email&&(
+          <p className="text-red-500 text-xs">
+            {error.email.message}
+          </p>  
+        )}
         <input
           type="text"
-          name="entry.133101820"
+         {...register("message",{required: "kindly enter your message"})}
           id="message"
           placeholder="Tell us a bit about your project..."
           className="h-24 border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
-          required
-          value={formData.message}
-          onChange={(e) => handleChange(e.target.value, "message")}
+        
         />
+        {error.message&&(
+          <p className="text-red-500 text-xs">
+            {error.message.message}
+          </p>  
+        )}
 
         <p className="my-5 text-zinc-800">How can we help?</p>
 
@@ -88,11 +80,15 @@ function Form() {
               >
                 <input
                   type="checkbox"
-                  name="entry.1574888281"
+                  {...register("services",{required: "kindly select a service"})}
                   value={service}
                   className="size-6"
-                  onChange={(e) => handleCheckbox(service, e.target.checked)}
                 />
+                  {error.service&&(
+          <p className="text-red-500 text-xs">
+            {error.message.service}
+          </p>  
+        )}
                 {service}
               </label>
             );
